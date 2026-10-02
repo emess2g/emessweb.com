@@ -23,6 +23,29 @@ export default function Contact() {
 const handleSubmit = async (e) => {
   e.preventDefault();
 
+  const formData = new FormData();
+
+  formData.append("access_key", import.meta.env.VITE_WEB3FORMS_ACCESS_KEY);
+
+  formData.append("subject", `New Project Request — ${form.business}`);
+  formData.append("from_name", form.name);
+
+  formData.append("name", form.name);
+  formData.append("business", form.business);
+  formData.append("email", form.email);
+  formData.append("whatsapp", form.whatsapp || "Not provided");
+  formData.append("service", form.service);
+  formData.append("message", form.message);
+
+  const object = Object.fromEntries(formData);
+  const json = JSON.stringify(object);
+
+  console.log(
+    "Web3Forms key exists:",
+    !!import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+  );
+  console.log("Submitting to Web3Forms...");
+
   try {
     const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
@@ -30,28 +53,16 @@ const handleSubmit = async (e) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({
-        access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
-
-        subject: `New Project Request — ${form.business}`,
-
-        from_name: form.name,
-
-        name: form.name,
-        business: form.business,
-        email: form.email,
-        whatsapp: form.whatsapp || "Not provided",
-        service: form.service,
-        message: form.message,
-
-        botcheck: "",
-      }),
+      body: json,
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
-    if (!data.success) {
-      throw new Error(data.message || "Failed to send project request.");
+    console.log("Web3Forms HTTP status:", response.status);
+    console.log("Web3Forms result:", result);
+
+    if (response.status !== 200 || !result.success) {
+      throw new Error(result.message || "Web3Forms submission failed.");
     }
 
     alert("Project request sent successfully. We'll get back to you shortly.");
@@ -67,9 +78,7 @@ const handleSubmit = async (e) => {
   } catch (error) {
     console.error("Contact form error:", error);
 
-    alert(
-      "We couldn't send your request right now. Please try again or contact us directly on WhatsApp.",
-    );
+    alert(`Form error: ${error.message}`);
   }
 };
 
