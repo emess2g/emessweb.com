@@ -24,23 +24,37 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const response = await fetch("/api/send-email", {
+    const response = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
-      body: JSON.stringify(form),
+      body: JSON.stringify({
+        access_key: import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+
+        subject: `New Project Request — ${form.business}`,
+
+        from_name: form.name,
+
+        name: form.name,
+        business: form.business,
+        email: form.email,
+        whatsapp: form.whatsapp || "Not provided",
+        service: form.service,
+        message: form.message,
+
+        botcheck: "",
+      }),
     });
 
     const data = await response.json();
 
-    if (!response.ok) {
+    if (!data.success) {
       throw new Error(data.message || "Failed to send project request.");
     }
 
-    alert(
-      "Project request sent successfully. We will get back to you shortly.",
-    );
+    alert("Project request sent successfully. We'll get back to you shortly.");
 
     setForm({
       name: "",
@@ -54,7 +68,7 @@ const handleSubmit = async (e) => {
     console.error("Contact form error:", error);
 
     alert(
-      "We couldn't send your request. Please contact us directly by email or WhatsApp.",
+      "We couldn't send your request right now. Please try again or contact us directly on WhatsApp.",
     );
   }
 };
