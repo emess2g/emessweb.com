@@ -35,11 +35,11 @@ const handleSubmit = async (e) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.message || "Failed to send request.");
+      throw new Error(data.message || "Failed to send project request.");
     }
 
     alert(
-      "Thank you! Your project request has been sent. We'll get back to you shortly.",
+      "Project request sent successfully. We will get back to you shortly.",
     );
 
     setForm({
@@ -51,10 +51,10 @@ const handleSubmit = async (e) => {
       message: "",
     });
   } catch (error) {
-    console.error(error);
+    console.error("Contact form error:", error);
 
     alert(
-      "We couldn't send your request right now. Please contact us directly by email or WhatsApp.",
+      "We couldn't send your request. Please contact us directly by email or WhatsApp.",
     );
   }
 };
@@ -270,7 +270,7 @@ const handleSubmit = async (e) => {
               </motion.button>
 
               <p className="mt-4 text-center text-xs text-black/25 dark:text-white/25">
-                Your project details will open in WhatsApp.
+                Your project request will be sent securely to our team.
               </p>
             </motion.form>
           </Reveal>
