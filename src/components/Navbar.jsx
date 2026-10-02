@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -16,29 +16,44 @@ export default function Navbar() {
     return true;
   });
 
-  const menuRef = useRef(null);
-
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem("emessWeb-theme", dark ? "dark" : "light");
   }, [dark]);
 
+  // Lock body scroll while mobile menu is open
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (open && menuRef.current && !menuRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "";
     };
   }, [open]);
 
-  const handleNavClick = () => {
+  const handleNavClick = (id) => {
     setOpen(false);
+
+    // Wait for the menu closing animation to begin,
+    // then scroll smoothly to the target section.
+    requestAnimationFrame(() => {
+      const section = document.getElementById(id);
+
+      if (section) {
+        const navbarOffset = 110;
+
+        const sectionTop =
+          section.getBoundingClientRect().top + window.scrollY - navbarOffset;
+
+        window.scrollTo({
+          top: sectionTop,
+          behavior: "smooth",
+        });
+      }
+    });
   };
 
   return (
@@ -51,12 +66,19 @@ export default function Navbar() {
       }}
       className="fixed left-0 right-0 top-0 z-[100] px-4 pt-4 md:px-8"
     >
-      <div ref={menuRef} className="relative mx-auto max-w-7xl">
+      <div className="relative mx-auto max-w-7xl">
         {/* Main navbar */}
-        <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-white/80 px-5 py-4 shadow-xl shadow-black/5 backdrop-blur-xl transition-all duration-500 dark:border-white/10 dark:bg-black/60 dark:shadow-black/20 md:px-7">
+        <div className="relative z-[110] flex items-center justify-between rounded-2xl border border-black/10 bg-white/80 px-5 py-4 shadow-xl shadow-black/5 backdrop-blur-xl transition-all duration-500 dark:border-white/10 dark:bg-black/60 dark:shadow-black/20 md:px-7">
           {/* Logo */}
-          <motion.a
-            href="#"
+          <motion.button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
             whileHover={{ x: 2 }}
             transition={{ duration: 0.2 }}
             className="group text-xl font-bold tracking-tight text-black transition-colors dark:text-white"
@@ -66,20 +88,21 @@ export default function Navbar() {
             <span className="ml-1 inline-block text-cyan-500 transition-transform duration-300 group-hover:translate-x-1">
               .
             </span>
-          </motion.a>
+          </motion.button>
 
           {/* Desktop Navigation */}
           <div className="hidden items-center gap-8 md:flex">
             {navItems.map((item) => (
-              <a
+              <button
                 key={item}
-                href={`#${item.toLowerCase()}`}
+                type="button"
+                onClick={() => handleNavClick(item.toLowerCase())}
                 className="group relative py-2 text-sm text-black/60 transition-colors hover:text-black dark:text-white/60 dark:hover:text-white"
               >
                 {item}
 
                 <span className="absolute bottom-0 left-0 h-px w-0 bg-cyan-400 transition-all duration-300 group-hover:w-full" />
-              </a>
+              </button>
             ))}
           </div>
 
@@ -87,6 +110,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
             {/* Theme toggle */}
             <motion.button
+              type="button"
               whileTap={{ scale: 0.9 }}
               onClick={() => setDark(!dark)}
               aria-label="Toggle theme"
@@ -143,8 +167,9 @@ export default function Navbar() {
             </motion.button>
 
             {/* Desktop CTA */}
-            <motion.a
-              href="#contact"
+            <motion.button
+              type="button"
+              onClick={() => handleNavClick("contact")}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="group hidden items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-cyan-400 hover:text-black dark:bg-white dark:text-black dark:hover:bg-cyan-400 md:flex"
@@ -154,15 +179,16 @@ export default function Navbar() {
                 size={16}
                 className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               />
-            </motion.a>
+            </motion.button>
 
             {/* Mobile menu button */}
             <motion.button
+              type="button"
               whileTap={{ scale: 0.9 }}
-              onClick={() => setOpen(!open)}
-              aria-label="Toggle menu"
+              onClick={() => setOpen((prev) => !prev)}
+              aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              className="text-black dark:text-white md:hidden"
+              className="relative z-[120] flex h-10 w-10 items-center justify-center rounded-full text-black transition-colors dark:text-white md:hidden"
             >
               <AnimatePresence mode="wait" initial={false}>
                 {open ? (
@@ -189,38 +215,51 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Mobile backdrop */}
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[90] bg-black/20 backdrop-blur-[2px] md:hidden"
+              onClick={() => setOpen(false)}
+            />
+          )}
+        </AnimatePresence>
+
         {/* Mobile menu */}
         <AnimatePresence>
           {open && (
             <motion.div
               initial={{
                 opacity: 0,
-                height: 0,
-                y: -10,
+                y: -15,
+                scale: 0.98,
               }}
               animate={{
                 opacity: 1,
-                height: "auto",
                 y: 0,
+                scale: 1,
               }}
               exit={{
                 opacity: 0,
-                height: 0,
-                y: -10,
+                y: -15,
+                scale: 0.98,
               }}
               transition={{
-                duration: 0.3,
+                duration: 0.25,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="overflow-hidden"
+              className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[115] md:hidden"
             >
-              <div className="mt-2 rounded-2xl border border-black/10 bg-white/95 p-5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-black/95 md:hidden">
-                <div className="flex flex-col gap-2">
+              <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-2xl shadow-black/20 dark:border-white/10 dark:bg-[#0a0a0a]">
+                <div className="flex flex-col gap-1">
                   {navItems.map((item, index) => (
-                    <motion.a
+                    <motion.button
                       key={item}
-                      href={`#${item.toLowerCase()}`}
-                      onClick={handleNavClick}
+                      type="button"
+                      onClick={() => handleNavClick(item.toLowerCase())}
                       initial={{
                         opacity: 0,
                         x: -15,
@@ -232,15 +271,15 @@ export default function Navbar() {
                       transition={{
                         delay: index * 0.05,
                       }}
-                      className="rounded-xl px-3 py-3 text-black/70 transition-colors hover:bg-black/5 hover:text-cyan-500 dark:text-white/70 dark:hover:bg-white/5 dark:hover:text-cyan-400"
+                      className="w-full rounded-xl px-4 py-3.5 text-left text-black/70 transition-colors hover:bg-black/5 hover:text-cyan-500 dark:text-white/70 dark:hover:bg-white/5 dark:hover:text-cyan-400"
                     >
                       {item}
-                    </motion.a>
+                    </motion.button>
                   ))}
 
-                  <motion.a
-                    href="#contact"
-                    onClick={handleNavClick}
+                  <motion.button
+                    type="button"
+                    onClick={() => handleNavClick("contact")}
                     initial={{
                       opacity: 0,
                       y: 10,
@@ -252,11 +291,11 @@ export default function Navbar() {
                     transition={{
                       delay: 0.2,
                     }}
-                    className="mt-2 flex items-center justify-center gap-2 rounded-full bg-black px-5 py-3 font-semibold text-white transition-all hover:bg-cyan-400 hover:text-black dark:bg-white dark:text-black dark:hover:bg-cyan-400"
+                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3.5 font-semibold text-white transition-all hover:bg-cyan-400 hover:text-black dark:bg-white dark:text-black dark:hover:bg-cyan-400"
                   >
                     Start a Project
                     <ArrowUpRight size={16} />
-                  </motion.a>
+                  </motion.button>
                 </div>
               </div>
             </motion.div>
