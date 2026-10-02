@@ -20,30 +20,44 @@ export default function Contact() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const whatsappMessage = `
-Hello emessWeb 👋
+  try {
+    const response = await fetch("/api/send-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(form),
+    });
 
-I would like to start a project.
+    const data = await response.json();
 
-Name: ${form.name}
-Business: ${form.business}
-Email: ${form.email}
-WhatsApp: ${form.whatsapp || "Not provided"}
-Service: ${form.service}
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to send request.");
+    }
 
-Project details:
-${form.message}
-    `.trim();
+    alert(
+      "Thank you! Your project request has been sent. We'll get back to you shortly.",
+    );
 
-    const whatsappUrl = `https://wa.me/233550862954?text=${encodeURIComponent(
-      whatsappMessage,
-    )}`;
+    setForm({
+      name: "",
+      business: "",
+      email: "",
+      whatsapp: "",
+      service: "",
+      message: "",
+    });
+  } catch (error) {
+    console.error(error);
 
-    window.open(whatsappUrl, "_blank");
-  };
+    alert(
+      "We couldn't send your request right now. Please contact us directly by email or WhatsApp.",
+    );
+  }
+};
 
   return (
     <section
