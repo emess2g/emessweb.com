@@ -21,7 +21,7 @@ const projects = [
     title: "Haven House",
     description:
       "A refined digital presence created to showcase rooms, amenities, and the experience of staying there.",
-    href: "#",
+    href: "/haven-house",
     image:
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=90",
     services: ["Art Direction", "Web Design", "Development"],
