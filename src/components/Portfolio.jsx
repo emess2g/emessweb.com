@@ -34,7 +34,7 @@ const projects = [
     title: "Vertex Build",
     description:
       "A confident corporate website designed for a modern construction and property brand.",
-    href: "#",
+    href: "/vertex-build",
     image:
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=90",
     services: ["Brand Direction", "Web Design", "Development"],
