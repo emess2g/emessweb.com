@@ -18,8 +18,11 @@ const links = {
 const socials = [
   { label: "Instagram", href: "#" },
   { label: "Facebook", href: "#" },
-  { label: "LinkedIn", href: "#" },
-  { label: "X", href: "#" },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/essuon-emmanuel-0b027a208/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base%3BpNn1iPMESz24RhIjCCCJ3A%3D%3D",
+  },
+  { label: "X", href: "https://x.com/emess2g" },
 ];
 
 export default function Footer() {
