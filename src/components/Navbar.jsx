@@ -1,11 +1,19 @@
+
 import { useEffect, useState } from "react";
-import { Menu, X, ArrowUpRight, Sun, Moon } from "lucide-react";
+import {
+  Menu,
+  X,
+  ArrowUpRight,
+  Sun,
+  Moon,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = ["Services", "Work", "Process", "Pricing"];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+
   const [dark, setDark] = useState(() => {
     const savedTheme = localStorage.getItem("emessWeb-theme");
 
@@ -13,21 +21,18 @@ export default function Navbar() {
       return savedTheme === "dark";
     }
 
-    return true;
+    return false;
   });
 
+  /* Apply theme */
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
     localStorage.setItem("emessWeb-theme", dark ? "dark" : "light");
   }, [dark]);
 
-  // Lock body scroll while mobile menu is open
+  /* Prevent background scrolling when mobile menu is open */
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = open ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
@@ -37,8 +42,6 @@ export default function Navbar() {
   const handleNavClick = (id) => {
     setOpen(false);
 
-    // Wait for the menu closing animation to begin,
-    // then scroll smoothly to the target section.
     requestAnimationFrame(() => {
       const section = document.getElementById(id);
 
@@ -46,7 +49,9 @@ export default function Navbar() {
         const navbarOffset = 110;
 
         const sectionTop =
-          section.getBoundingClientRect().top + window.scrollY - navbarOffset;
+          section.getBoundingClientRect().top +
+          window.scrollY -
+          navbarOffset;
 
         window.scrollTo({
           top: sectionTop,
@@ -61,61 +66,160 @@ export default function Navbar() {
       initial={{ y: -30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
-        duration: 0.6,
+        duration: 0.7,
         ease: [0.22, 1, 0.36, 1],
       }}
       className="fixed left-0 right-0 top-0 z-[100] px-4 pt-4 md:px-8"
     >
       <div className="relative mx-auto max-w-7xl">
-        {/* Main navbar */}
-        <div className="relative z-[110] flex items-center justify-between rounded-2xl border border-black/10 bg-white/80 px-5 py-4 shadow-xl shadow-black/5 backdrop-blur-xl transition-all duration-500 dark:border-white/10 dark:bg-black/60 dark:shadow-black/20 md:px-7">
-          {/* Logo */}
+        {/* =========================================================
+            MAIN NAVBAR
+        ========================================================= */}
+        <div
+          className="
+            relative z-[110]
+            flex items-center justify-between
+            rounded-[1.25rem]
+            border-2
+            border-[#171310]
+            bg-[#FFF9F2]
+            px-4 py-3
+            text-[#171310]
+            shadow-[4px_5px_0_#171310]
+            transition-all duration-500
+
+            dark:border-[#FFF9F2]/20
+            dark:bg-[#211914]
+            dark:text-[#FFF9F2]
+            dark:shadow-[4px_5px_0_#FF6B35]
+
+            md:px-6
+          "
+        >
+          {/* =====================================================
+              LOGO
+          ===================================================== */}
           <motion.button
             type="button"
             onClick={() => {
               setOpen(false);
+
               window.scrollTo({
                 top: 0,
                 behavior: "smooth",
               });
             }}
             whileHover={{ x: 2 }}
-            transition={{ duration: 0.2 }}
-            className="group text-xl font-bold tracking-tight text-black transition-colors dark:text-white"
+            className="
+              group relative
+              text-xl font-black
+              tracking-[-0.04em]
+              text-[#171310]
+              transition-colors
+
+              dark:text-[#FFF9F2]
+            "
           >
             emess
-            <span className="text-cyan-500">Web</span>
-            <span className="ml-1 inline-block text-cyan-500 transition-transform duration-300 group-hover:translate-x-1">
+            <span className="text-[#FF6B35]">Web</span>
+
+            <motion.span
+              animate={{
+                scale: [1, 1.25, 1],
+              }}
+              transition={{
+                duration: 2.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="ml-1 inline-block text-[#7867D8]"
+            >
               .
-            </span>
+            </motion.span>
           </motion.button>
 
-          {/* Desktop Navigation */}
-          <div className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => handleNavClick(item.toLowerCase())}
-                className="group relative py-2 text-sm text-black/60 transition-colors hover:text-black dark:text-white/60 dark:hover:text-white"
-              >
-                {item}
+          {/* =====================================================
+              DESKTOP NAVIGATION
+          ===================================================== */}
+          <div className="hidden items-center gap-1 md:flex">
+            {navItems.map((item, index) => {
+              const colors = [
+                "hover:text-[#FF6B35]",
+                "hover:text-[#7867D8]",
+                "hover:text-[#168A9A]",
+                "hover:text-[#E09A00]",
+              ];
 
-                <span className="absolute bottom-0 left-0 h-px w-0 bg-cyan-400 transition-all duration-300 group-hover:w-full" />
-              </button>
-            ))}
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() =>
+                    handleNavClick(item.toLowerCase())
+                  }
+                  className={`
+                    group relative
+                    rounded-full
+                    px-4 py-2
+                    text-sm font-medium
+                    text-[#625B55]
+                    transition-colors
+
+                    dark:text-white/55
+                    ${colors[index]}
+                  `}
+                >
+                  {item}
+
+                  <span
+                    className="
+                      absolute bottom-1.5 left-1/2
+                      h-1 w-1
+                      -translate-x-1/2
+                      scale-0
+                      rounded-full
+                      bg-current
+                      transition-transform duration-300
+                      group-hover:scale-100
+                    "
+                  />
+                </button>
+              );
+            })}
           </div>
 
-          {/* Right controls */}
-          <div className="flex items-center gap-3">
+          {/* =====================================================
+              RIGHT CONTROLS
+          ===================================================== */}
+          <div className="flex items-center gap-2">
             {/* Theme toggle */}
             <motion.button
               type="button"
               whileTap={{ scale: 0.9 }}
-              onClick={() => setDark(!dark)}
-              aria-label="Toggle theme"
+              onClick={() => setDark((prev) => !prev)}
+              aria-label={
+                dark
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
               aria-pressed={dark}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-black/5 text-black transition-all hover:border-cyan-400/30 hover:bg-cyan-400/10 dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:border-cyan-400/30 dark:hover:bg-cyan-400/10"
+              className="
+                flex h-10 w-10
+                items-center justify-center
+                rounded-full
+                border-2
+                border-[#171310]
+                bg-[#FFE2C8]
+                text-[#171310]
+                transition-all duration-300
+                hover:bg-[#FFB84D]
+
+                dark:border-[#FFF9F2]/20
+                dark:bg-[#30251E]
+                dark:text-[#FFF9F2]
+                dark:hover:bg-[#FFB84D]
+                dark:hover:text-[#171310]
+              "
             >
               <AnimatePresence mode="wait" initial={false}>
                 {dark ? (
@@ -138,7 +242,7 @@ export default function Navbar() {
                     }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Sun size={18} />
+                    <Sun size={17} />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -160,54 +264,125 @@ export default function Navbar() {
                     }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Moon size={18} />
+                    <Moon size={17} />
                   </motion.div>
                 )}
               </AnimatePresence>
             </motion.button>
 
-            {/* Desktop CTA */}
+            {/* =================================================
+                DESKTOP CTA
+            ================================================= */}
             <motion.button
               type="button"
               onClick={() => handleNavClick("contact")}
-              whileHover={{ scale: 1.03 }}
+              whileHover={{
+                y: -2,
+                x: -1,
+              }}
               whileTap={{ scale: 0.97 }}
-              className="group hidden items-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-cyan-400 hover:text-black dark:bg-white dark:text-black dark:hover:bg-cyan-400 md:flex"
+              className="
+                group hidden
+                items-center gap-2
+                rounded-full
+                border-2
+                border-[#171310]
+                bg-[#FF6B35]
+                px-5 py-2.5
+                text-sm font-bold
+                text-white
+                shadow-[3px_3px_0_#171310]
+                transition-all duration-300
+
+                hover:bg-[#7867D8]
+                hover:shadow-[4px_4px_0_#171310]
+
+                dark:border-[#FFF9F2]/20
+                dark:shadow-[3px_3px_0_#000]
+
+                md:flex
+              "
             >
               Start a Project
+
               <ArrowUpRight
                 size={16}
-                className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                className="
+                  transition-transform duration-300
+                  group-hover:-translate-y-0.5
+                  group-hover:translate-x-0.5
+                "
               />
             </motion.button>
 
-            {/* Mobile menu button */}
+            {/* =================================================
+                MOBILE MENU BUTTON
+            ================================================= */}
             <motion.button
               type="button"
               whileTap={{ scale: 0.9 }}
               onClick={() => setOpen((prev) => !prev)}
-              aria-label={open ? "Close menu" : "Open menu"}
+              aria-label={
+                open ? "Close menu" : "Open menu"
+              }
               aria-expanded={open}
-              className="relative z-[120] flex h-10 w-10 items-center justify-center rounded-full text-black transition-colors dark:text-white md:hidden"
+              className="
+                relative z-[120]
+                flex h-10 w-10
+                items-center justify-center
+                rounded-full
+                border-2
+                border-[#171310]
+                bg-white
+                text-[#171310]
+                transition-colors
+
+                dark:border-[#FFF9F2]/20
+                dark:bg-[#30251E]
+                dark:text-[#FFF9F2]
+
+                md:hidden
+              "
             >
-              <AnimatePresence mode="wait" initial={false}>
+              <AnimatePresence
+                mode="wait"
+                initial={false}
+              >
                 {open ? (
                   <motion.div
                     key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
+                    initial={{
+                      rotate: -90,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      rotate: 0,
+                      opacity: 1,
+                    }}
+                    exit={{
+                      rotate: 90,
+                      opacity: 0,
+                    }}
                   >
-                    <X size={24} />
+                    <X size={21} />
                   </motion.div>
                 ) : (
                   <motion.div
                     key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
+                    initial={{
+                      rotate: 90,
+                      opacity: 0,
+                    }}
+                    animate={{
+                      rotate: 0,
+                      opacity: 1,
+                    }}
+                    exit={{
+                      rotate: -90,
+                      opacity: 0,
+                    }}
                   >
-                    <Menu size={24} />
+                    <Menu size={21} />
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -215,27 +390,39 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile backdrop */}
+        {/* =======================================================
+            MOBILE BACKDROP
+        ======================================================= */}
         <AnimatePresence>
           {open && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[90] bg-black/20 backdrop-blur-[2px] md:hidden"
+              className="
+                fixed inset-0 z-[90]
+                bg-[#171310]/20
+                backdrop-blur-[3px]
+
+                dark:bg-black/60
+
+                md:hidden
+              "
               onClick={() => setOpen(false)}
             />
           )}
         </AnimatePresence>
 
-        {/* Mobile menu */}
+        {/* =======================================================
+            MOBILE MENU
+        ======================================================= */}
         <AnimatePresence>
           {open && (
             <motion.div
               initial={{
                 opacity: 0,
                 y: -15,
-                scale: 0.98,
+                scale: 0.97,
               }}
               animate={{
                 opacity: 1,
@@ -245,21 +432,50 @@ export default function Navbar() {
               exit={{
                 opacity: 0,
                 y: -15,
-                scale: 0.98,
+                scale: 0.97,
               }}
               transition={{
                 duration: 0.25,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-[115] md:hidden"
+              className="
+                absolute left-0 right-0
+                top-[calc(100%+0.75rem)]
+                z-[115]
+                md:hidden
+              "
             >
-              <div className="rounded-2xl border border-black/10 bg-white p-5 shadow-2xl shadow-black/20 dark:border-white/10 dark:bg-[#0a0a0a]">
-                <div className="flex flex-col gap-1">
+              <div
+                className="
+                  relative overflow-hidden
+                  rounded-[1.5rem]
+                  border-2
+                  border-[#171310]
+                  bg-[#FFF9F2]
+                  p-5
+                  text-[#171310]
+                  shadow-[6px_7px_0_#171310]
+                  transition-all duration-500
+
+                  dark:border-[#FFF9F2]/20
+                  dark:bg-[#211914]
+                  dark:text-[#FFF9F2]
+                  dark:shadow-[6px_7px_0_#FF6B35]
+                "
+              >
+                {/* Decorations */}
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#FFB84D]" />
+
+                <div className="absolute -bottom-10 -left-10 h-24 w-24 rounded-full bg-[#65D6D6]" />
+
+                <div className="relative flex flex-col gap-1">
                   {navItems.map((item, index) => (
                     <motion.button
                       key={item}
                       type="button"
-                      onClick={() => handleNavClick(item.toLowerCase())}
+                      onClick={() =>
+                        handleNavClick(item.toLowerCase())
+                      }
                       initial={{
                         opacity: 0,
                         x: -15,
@@ -271,15 +487,46 @@ export default function Navbar() {
                       transition={{
                         delay: index * 0.05,
                       }}
-                      className="w-full rounded-xl px-4 py-3.5 text-left text-black/70 transition-colors hover:bg-black/5 hover:text-cyan-500 dark:text-white/70 dark:hover:bg-white/5 dark:hover:text-cyan-400"
+                      className="
+                        group flex w-full
+                        items-center justify-between
+                        rounded-xl
+                        px-4 py-3.5
+                        text-left
+                        text-[#625B55]
+                        transition-colors
+
+                        hover:bg-[#FFE2C8]
+                        hover:text-[#171310]
+
+                        dark:text-white/60
+                        dark:hover:bg-white/10
+                        dark:hover:text-white
+                      "
                     >
-                      {item}
+                      <span className="font-medium">
+                        {item}
+                      </span>
+
+                      <ArrowUpRight
+                        size={16}
+                        className="
+                          opacity-0
+                          transition-all duration-300
+                          group-hover:translate-x-0.5
+                          group-hover:-translate-y-0.5
+                          group-hover:opacity-100
+                        "
+                      />
                     </motion.button>
                   ))}
 
+                  {/* Mobile CTA */}
                   <motion.button
                     type="button"
-                    onClick={() => handleNavClick("contact")}
+                    onClick={() =>
+                      handleNavClick("contact")
+                    }
                     initial={{
                       opacity: 0,
                       y: 10,
@@ -291,7 +538,24 @@ export default function Navbar() {
                     transition={{
                       delay: 0.2,
                     }}
-                    className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3.5 font-semibold text-white transition-all hover:bg-cyan-400 hover:text-black dark:bg-white dark:text-black dark:hover:bg-cyan-400"
+                    className="
+                      mt-3 flex w-full
+                      items-center justify-center
+                      gap-2
+                      rounded-full
+                      border-2
+                      border-[#171310]
+                      bg-[#FF6B35]
+                      px-5 py-3.5
+                      font-bold text-white
+                      shadow-[3px_3px_0_#171310]
+                      transition-all
+
+                      hover:bg-[#7867D8]
+
+                      dark:border-[#FFF9F2]/20
+                      dark:shadow-[3px_3px_0_#000]
+                    "
                   >
                     Start a Project
                     <ArrowUpRight size={16} />

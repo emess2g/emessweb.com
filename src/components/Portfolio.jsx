@@ -1,398 +1,385 @@
-
 import { motion } from "framer-motion";
-import Reveal from "./Reveal";
-
-import { ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowUpRight, MoveUpRight } from "lucide-react";
 
 const projects = [
   {
     number: "01",
     category: "Restaurant",
-    href: "/savora",
     title: "Savora",
     description:
       "A premium restaurant experience built around atmosphere, storytelling, and seamless reservations.",
+    href: "/savora",
     image:
       "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1800&q=90",
-    accent: "text-[#d8a35d]",
-    line: "bg-[#d8a35d]",
+    services: ["Strategy", "Web Design", "Development"],
+    year: "2026",
+    accent: "#FF6B35",
   },
   {
     number: "02",
     category: "Hospitality",
-    href: "#",
     title: "Haven House",
     description:
-      "A refined hospitality experience designed to showcase rooms, amenities, and bookings.",
+      "A refined digital presence created to showcase rooms, amenities, and the experience of staying there.",
+    href: "#",
     image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=90",
-    accent: "text-cyan-300",
-    line: "bg-cyan-400",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1800&q=90",
+    services: ["Art Direction", "Web Design", "Development"],
+    year: "2026",
+    accent: "#168A9A",
   },
   {
     number: "03",
     category: "Construction",
-    href: "#",
     title: "Vertex Build",
     description:
-      "A strong corporate presence designed for a modern construction and property brand.",
+      "A confident corporate website designed for a modern construction and property brand.",
+    href: "#",
     image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1400&q=90",
-    accent: "text-violet-300",
-    line: "bg-violet-400",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=90",
+    services: ["Brand Direction", "Web Design", "Development"],
+    year: "2026",
+    accent: "#7867D8",
   },
 ];
 
-const reveal = {
+const ease = [0.22, 1, 0.36, 1];
+
+const fadeUp = {
   hidden: {
     opacity: 0,
-    y: 40,
+    y: 30,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.8,
-      ease: [0.22, 1, 0.36, 1],
+      ease,
     },
   },
 };
+
+function ProjectImage({ project, featured = false }) {
+  return (
+    <div
+      className={`group/image relative overflow-hidden rounded-[1.5rem] border-2 border-[#171310] bg-[#E7E2DA] shadow-[6px_6px_0_#171310] transition-all duration-500 dark:border-[#FFF9F2] dark:shadow-[6px_6px_0_#FF6B35] ${
+        featured ? "aspect-[16/9] md:aspect-[16/8]" : "aspect-[4/3]"
+      }`}
+    >
+      <motion.img
+        src={project.image}
+        alt={`${project.title} project`}
+        className="h-full w-full object-cover"
+        whileHover={{ scale: 1.045 }}
+        transition={{
+          duration: 1,
+          ease,
+        }}
+      />
+
+      {/* Image overlay */}
+      <div className="absolute inset-0 bg-[#171310]/10 transition-colors duration-500 group-hover/image:bg-transparent" />
+
+      {/* Project label */}
+      <div className="absolute left-5 top-5 flex items-center gap-3 md:left-7 md:top-7">
+        <span className="flex h-9 min-w-9 items-center justify-center rounded-full border-2 border-[#171310] bg-[#FFF9F2] px-2 text-[10px] font-black text-[#171310] shadow-[3px_3px_0_#171310] dark:border-[#FFF9F2] dark:bg-[#211914] dark:text-[#FFF9F2] dark:shadow-[3px_3px_0_#FF6B35]">
+          {project.number}
+        </span>
+
+        <span className="rounded-full border border-white/30 bg-[#171310]/50 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
+          {project.category}
+        </span>
+      </div>
+
+      {/* Hover button */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileHover={{ scale: 1.05 }}
+        className="absolute bottom-5 right-5 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#171310] bg-[#FFF9F2] text-[#171310] opacity-0 shadow-[4px_4px_0_#171310] transition-all duration-500 group-hover/image:scale-100 group-hover/image:opacity-100 md:bottom-7 md:right-7"
+      >
+        <ArrowUpRight size={18} />
+      </motion.div>
+
+      {/* Accent corner */}
+      <div
+        className="absolute bottom-0 left-0 h-2 w-24"
+        style={{
+          backgroundColor: project.accent,
+        }}
+      />
+    </div>
+  );
+}
+
+function ProjectMeta({ project, featured = false }) {
+  return (
+    <div
+      className={`grid gap-6 ${
+        featured
+          ? "md:grid-cols-[1fr_auto] md:items-end"
+          : "md:grid-cols-[1fr_auto]"
+      }`}
+    >
+      <div>
+        <div className="flex items-center gap-3">
+          <h3
+            className={`font-semibold tracking-[-0.04em] text-[#171310] dark:text-[#FFF9F2] ${
+              featured ? "text-4xl md:text-6xl" : "text-3xl md:text-4xl"
+            }`}
+          >
+            {project.title}
+          </h3>
+
+          <span
+            className="h-2.5 w-2.5 rounded-full"
+            style={{
+              backgroundColor: project.accent,
+            }}
+          />
+        </div>
+
+        <p
+          className={`mt-4 leading-relaxed text-[#756D66] dark:text-white/55 ${
+            featured ? "max-w-2xl text-sm md:text-base" : "max-w-lg text-sm"
+          }`}
+        >
+          {project.description}
+        </p>
+
+        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+          {project.services.map((service) => (
+            <span
+              key={service}
+              className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8C877F] dark:text-white/40"
+            >
+              {service}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-end justify-between gap-8 md:flex-col md:items-end md:justify-between">
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#A09A92] dark:text-white/30">
+          {project.year}
+        </span>
+
+        <span className="group/link inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em] text-[#4F4A44] transition-colors duration-300 hover:text-[#FF6B35] dark:text-white/65 dark:hover:text-[#FF6B35]">
+          View project
+          <MoveUpRight
+            size={14}
+            className="transition-transform duration-300 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
+          />
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export default function Portfolio() {
   return (
     <section
       id="work"
-      className="section relative overflow-hidden px-6 py-32 md:px-10 lg:py-40"
+      className="relative overflow-hidden bg-[#F4F1EC] px-6 py-32 text-[#171310] transition-colors duration-500 dark:bg-[#171310] dark:text-[#FFF9F2] md:px-10 lg:py-40"
     >
-      {/* Ambient background */}
-      <div className="pointer-events-none absolute left-1/2 top-20 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-cyan-500/[0.045] blur-[150px]" />
+      {/* =========================================================
+          BACKGROUND DECORATION
+      ========================================================= */}
+
+      <div className="pointer-events-none absolute -left-32 top-24 h-72 w-72 rounded-full bg-[#FFB84D]/15 blur-3xl dark:bg-[#FF6B35]/10" />
+
+      <div className="pointer-events-none absolute -right-32 top-[42%] h-80 w-80 rounded-full bg-[#7867D8]/10 blur-3xl dark:bg-[#7867D8]/10" />
+
+      {/* Floating geometric shapes */}
+      <motion.div
+        animate={{
+          y: [0, -15, 0],
+          rotate: [0, 8, 0],
+        }}
+        transition={{
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="pointer-events-none absolute right-[7%] top-36 hidden h-14 w-14 rounded-2xl border-2 border-[#171310] bg-[#FFB84D] shadow-[4px_4px_0_#171310] dark:border-[#FFF9F2] dark:shadow-[4px_4px_0_#FF6B35] md:block"
+      />
+
+      <motion.div
+        animate={{
+          y: [0, 12, 0],
+          rotate: [0, -8, 0],
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="pointer-events-none absolute bottom-[30%] left-[4%] hidden h-9 w-9 rounded-full bg-[#65D6D6] md:block"
+      />
 
       <div className="relative mx-auto max-w-7xl">
         {/* =========================================================
-            HEADING
+            HEADER
         ========================================================= */}
-        <motion.div
+
+        <motion.header
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.4 }}
-          className="mx-auto mb-24 max-w-5xl text-center"
+          className="mb-28"
         >
-          {/* Eyebrow */}
           <motion.div
-            variants={reveal}
-            className="mb-7 flex items-center justify-center gap-3"
+            variants={fadeUp}
+            className="mb-8 flex items-center gap-4"
           >
-            <motion.span
-              initial={{ width: 0 }}
-              whileInView={{ width: 40 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="h-px bg-cyan-400/60"
-            />
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8C877F] dark:text-white/35">
+              04
+            </span>
 
-            <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.35em] text-cyan-400">
-              <Sparkles size={13} />
+            <span className="h-px w-12 bg-[#C9C3BA] dark:bg-white/15" />
+
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#77716A] dark:text-white/45">
               Selected work
             </span>
 
-            <motion.span
-              initial={{ width: 0 }}
-              whileInView={{ width: 40 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="h-px bg-cyan-400/60"
-            />
+            <span className="h-2 w-2 rounded-full bg-[#FF6B35]" />
           </motion.div>
-          {/* Heading */}
-          <h2 className="text-5xl font-semibold leading-[0.92] tracking-tight md:text-7xl lg:text-8xl">
-            <motion.span
-              initial={{
-                opacity: 0,
-                y: 50,
-                filter: "blur(12px)",
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-              }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.8,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="block text-white"
+
+          <div className="grid gap-10 lg:grid-cols-[1.4fr_0.6fr] lg:items-end">
+            <motion.h2
+              variants={fadeUp}
+              className="max-w-5xl text-5xl font-semibold leading-[0.9] tracking-[-0.055em] text-[#171310] dark:text-[#FFF9F2] md:text-7xl lg:text-[7rem]"
             >
-              Digital experiences
-            </motion.span>
+              Designed for the screen.
+              <span className="relative block font-serif italic font-normal text-[#7867D8]">
+                Built for the business.
+                <svg
+                  className="absolute -bottom-3 left-0 h-3 w-64 md:w-80"
+                  viewBox="0 0 320 14"
+                  fill="none"
+                >
+                  <path
+                    d="M3 9C78 2 225 2 317 8"
+                    stroke="#FF6B35"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
+            </motion.h2>
 
-            <motion.span
-              initial={{
-                opacity: 0,
-                y: 50,
-                filter: "blur(12px)",
-              }}
-              whileInView={{
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-              }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.9,
-                delay: 0.18,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="relative mt-3 inline-block font-serif italic"
+            <motion.p
+              variants={fadeUp}
+              className="max-w-sm text-sm leading-7 text-[#6F6B65] dark:text-white/50 md:text-base lg:pb-2"
             >
-              <motion.span
-                animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{
-                  duration: 6,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="bg-gradient-to-r from-white via-cyan-300 to-white bg-[length:200%_auto] bg-clip-text text-transparent"
-              >
-                built to stand out.
-              </motion.span>
-
-              <motion.span
-                initial={{
-                  width: 0,
-                  opacity: 0,
-                }}
-                whileInView={{
-                  width: "100%",
-                  opacity: 1,
-                }}
-                viewport={{ once: true }}
-                transition={{
-                  delay: 0.9,
-                  duration: 1,
-                  ease: "easeOut",
-                }}
-                className="absolute -bottom-3 left-0 h-[2px] rounded-full bg-gradient-to-r from-cyan-400 via-violet-400 to-transparent"
-              />
-
-              <motion.span
-                initial={{
-                  left: "0%",
-                  opacity: 0,
-                }}
-                whileInView={{
-                  left: "100%",
-                  opacity: [0, 1, 0],
-                }}
-                viewport={{ once: true }}
-                transition={{
-                  delay: 1,
-                  duration: 1.4,
-                  ease: "easeInOut",
-                }}
-                className="absolute -bottom-[13px] h-1 w-16 -translate-x-1/2 rounded-full bg-cyan-300 blur-sm"
-              />
-            </motion.span>
-          </h2>
-
-          <motion.p
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.7,
-              delay: 0.55,
-            }}
-            className="mx-auto mt-10 max-w-2xl text-sm leading-relaxed text-white/40 md:text-base"
-          >
-            Modern digital experiences designed to make businesses look
-            credible, connect with customers, and grow online.
-          </motion.p>
-        </motion.div>
+              A selection of websites and digital experiences created for
+              businesses that want to be taken seriously online.
+            </motion.p>
+          </div>
+        </motion.header>
 
         {/* =========================================================
             FEATURED PROJECT
         ========================================================= */}
-        <motion.a
-          href={projects[0].href}
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{
-            duration: 0.9,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="group relative block overflow-hidden rounded-[2rem] border border-white/10 bg-[#090909]"
+
+        <motion.article
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          variants={fadeUp}
+          className="border-t-2 border-[#D4CFC7] pt-6 dark:border-white/10"
         >
-          {/* Image */}
-          <div className="relative h-[500px] overflow-hidden md:h-[650px]">
-            <motion.img
-              src={projects[0].image}
-              alt="Savora restaurant website concept"
-              className="h-full w-full object-cover"
-              whileHover={{ scale: 1.06 }}
-              transition={{
-                duration: 1.2,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-            />
+          <a href={projects[0].href} className="group block">
+            <ProjectImage project={projects[0]} featured />
 
-            {/* Cinematic overlays */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/5" />
-
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent opacity-70" />
-
-            {/* Top metadata */}
-            <div className="absolute left-6 right-6 top-6 flex items-center justify-between md:left-8 md:right-8 md:top-8">
-              <span className="rounded-full border border-white/15 bg-black/30 px-4 py-2 text-xs font-medium text-[#d8a35d] backdrop-blur-xl">
-                Restaurant
-              </span>
-
-              <span className="text-xs tracking-[0.2em] text-white/50">
-                01 / 03
-              </span>
+            <div className="mt-7">
+              <ProjectMeta project={projects[0]} featured />
             </div>
+          </a>
+        </motion.article>
 
-            {/* Project content */}
-            <div className="absolute bottom-0 left-0 right-0 p-7 md:p-10 lg:p-12">
-              <div className="max-w-2xl">
-                <p className="mb-4 text-xs uppercase tracking-[0.3em] text-white/50">
-                  Featured project
-                </p>
+        {/* =========================================================
+            DIVIDER
+        ========================================================= */}
 
-                <h3 className="text-5xl font-semibold tracking-tight text-white md:text-7xl">
-                  Savora
-                </h3>
+        <div className="my-32 flex items-center gap-5">
+          <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#99938A] dark:text-white/30">
+            More work
+          </span>
 
-                <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/55 md:text-base">
-                  A premium restaurant experience built around atmosphere,
-                  storytelling, and seamless reservations.
-                </p>
+          <div className="h-[2px] flex-1 bg-[#D4CFC7] dark:bg-white/10" />
 
-                <div className="mt-7 inline-flex items-center gap-3 text-sm font-medium text-white">
-                  <span className="border-b border-white/30 pb-1 transition-colors duration-300 group-hover:border-white">
-                    View live demo
-                  </span>
-
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:bg-white group-hover:text-black">
-                    <ArrowUpRight size={17} />
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Accent glow */}
-            <div className="pointer-events-none absolute -bottom-32 -right-20 h-72 w-72 rounded-full bg-[#d8a35d]/15 blur-[100px] transition-transform duration-1000 group-hover:scale-150" />
-          </div>
-
-          {/* Bottom line */}
-          <div className="h-px w-0 bg-[#d8a35d] transition-all duration-1000 group-hover:w-full" />
-        </motion.a>
+          <span className="h-2.5 w-2.5 rounded-full bg-[#7867D8]" />
+        </div>
 
         {/* =========================================================
             SECONDARY PROJECTS
         ========================================================= */}
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
+
+        <div className="grid gap-20 md:grid-cols-2 md:gap-x-8 md:gap-y-28">
           {projects.slice(1).map((project, index) => (
-            <Reveal
+            <motion.article
               key={project.title}
-              direction={index === 0 ? "left" : "right"}
-              delay={index === 0 ? 0 : index * 0.12}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={fadeUp}
+              transition={{
+                delay: index * 0.12,
+              }}
+              className={index === 1 ? "md:mt-28" : ""}
             >
-              <motion.a
-                key={project.number}
-                href={project.href}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.12,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className="group relative block overflow-hidden rounded-[2rem] border border-white/10 bg-[#090909]"
-              >
-                {/* Image */}
-                <div className="relative h-[420px] overflow-hidden md:h-[500px]">
-                  <motion.img
-                    src={project.image}
-                    alt={`${project.title} website concept`}
-                    className="h-full w-full object-cover opacity-80"
-                    whileHover={{ scale: 1.08 }}
-                    transition={{
-                      duration: 1,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  />
+              <a href={project.href} className="group block">
+                <ProjectImage project={project} />
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-transparent" />
-
-                  {/* Number */}
-                  <span className="absolute right-6 top-6 text-xs tracking-[0.2em] text-white/40">
-                    {project.number} / 03
-                  </span>
-
-                  {/* Category */}
-                  <span
-                    className={`absolute left-6 top-6 rounded-full border border-white/15 bg-black/30 px-4 py-2 text-xs font-medium backdrop-blur-xl ${project.accent}`}
-                  >
-                    {project.category}
-                  </span>
-
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-7 md:p-8">
-                    <div className="flex items-end justify-between gap-6">
-                      <div>
-                        <h3 className="text-4xl font-semibold tracking-tight text-white transition-transform duration-500 group-hover:translate-x-1 md:text-5xl">
-                          {project.title}
-                        </h3>
-
-                        <p className="mt-3 max-w-md text-sm leading-relaxed text-white/45">
-                          {project.description}
-                        </p>
-
-                        <div className="mt-5 text-xs uppercase tracking-[0.2em] text-white/40">
-                          Coming soon
-                        </div>
-                      </div>
-
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/10 text-white backdrop-blur-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:bg-white group-hover:text-black">
-                        <ArrowUpRight size={18} />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Glow */}
-                  <div
-                    className={`pointer-events-none absolute -bottom-24 -right-20 h-60 w-60 rounded-full ${project.line}/10 blur-[90px] transition-transform duration-1000 group-hover:scale-150`}
-                  />
+                <div className="mt-6">
+                  <ProjectMeta project={project} />
                 </div>
-
-                {/* Accent line */}
-                <div
-                  className={`h-px w-0 ${project.line} transition-all duration-700 group-hover:w-full`}
-                />
-              </motion.a>
-            </Reveal>
+              </a>
+            </motion.article>
           ))}
         </div>
 
         {/* =========================================================
-            FOOTNOTE
+            CTA
         ========================================================= */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-6 text-xs text-white/20 md:flex-row"
-        >
-          <span>Selected work · emessWeb</span>
 
-          <span>Concept experiences created for portfolio illustration.</span>
+        <motion.div
+          initial={{ opacity: 0, y: 25 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{
+            duration: 0.8,
+          }}
+          className="relative mt-32 overflow-hidden border-t-2 border-[#D4CFC7] pt-8 dark:border-white/10"
+        >
+          {/* CTA decorative shape */}
+          <div className="pointer-events-none absolute right-10 top-12 hidden h-16 w-16 rounded-full border-[10px] border-[#FFB84D]/40 md:block" />
+
+          <div className="grid gap-8 md:grid-cols-2 md:items-end">
+            <div>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#99938A] dark:text-white/35">
+                Have a project?
+              </span>
+
+              <h3 className="mt-4 max-w-xl text-3xl font-semibold tracking-[-0.04em] text-[#171310] dark:text-[#FFF9F2] md:text-4xl">
+                Let's build something{" "}
+                <span className="text-[#FF6B35]">worth seeing.</span>
+              </h3>
+            </div>
+
+            <div className="flex md:justify-end">
+              <a
+                href="#contact"
+                className="group inline-flex items-center gap-4 border-b-2 border-[#AAA39A] pb-3 text-xs font-black uppercase tracking-[0.18em] text-[#4F4A44] transition-all duration-300 hover:border-[#FF6B35] hover:text-[#FF6B35] dark:border-white/20 dark:text-white/65 dark:hover:border-[#FF6B35] dark:hover:text-[#FF6B35]"
+              >
+                Start a project
+                <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#C8C2B9] transition-all duration-300 group-hover:rotate-45 group-hover:border-[#FF6B35] group-hover:bg-[#FF6B35] group-hover:text-[#171310] dark:border-white/20">
+                  <ArrowUpRight size={14} />
+                </span>
+              </a>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

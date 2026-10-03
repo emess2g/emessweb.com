@@ -1,4 +1,8 @@
+
 @import "tailwindcss";
+
+/* Enable class-based dark mode in Tailwind v4 */
+@custom-variant dark (&:where(.dark, .dark *));
 
 html {
   scroll-behavior: smooth;
@@ -8,18 +12,18 @@ html {
 body {
   margin: 0;
   min-width: 320px;
-  background: #f8f8f6;
-  color: #111111;
+  background: #f7f2eb;
+  color: #171310;
   transition:
     background-color 0.5s ease,
     color 0.5s ease;
 }
 
 html.dark body {
-  background: #050505;
-  color: #ffffff;
+  background: #171310;
+  color: #fff9f2;
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.25);
+  background: rgba(255, 107, 53, 0.25);
 }

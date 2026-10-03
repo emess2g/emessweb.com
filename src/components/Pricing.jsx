@@ -1,13 +1,24 @@
 import { motion } from "framer-motion";
-import { Check, ArrowUpRight } from "lucide-react";
+import {
+  ArrowUpRight,
+  Check,
+  Sparkles,
+  Zap,
+  Crown,
+  WandSparkles,
+} from "lucide-react";
 import Reveal from "./Reveal";
 
 const plans = [
   {
     name: "Starter",
-    description: "For businesses that need a professional online presence.",
-    price: "From ₵1,500",
-    accent: "violet",
+    eyebrow: "Get online",
+    description:
+      "A polished foundation for businesses ready to establish a professional online presence.",
+    price: "₵1,500+",
+    icon: Zap,
+    color: "#FF6B35",
+    soft: "#FFE3D7",
     features: [
       "Professional business website",
       "Up to 5 pages",
@@ -19,10 +30,14 @@ const plans = [
   },
   {
     name: "Growth",
-    description: "For businesses ready for a stronger digital experience.",
-    price: "From ₵3,500",
+    eyebrow: "Go further",
+    description:
+      "A stronger digital experience designed for businesses ready to look sharper and do more online.",
+    price: "₵3,500+",
+    icon: Crown,
+    color: "#7867D8",
+    soft: "#E9E4FF",
     popular: true,
-    accent: "cyan",
     features: [
       "Everything in Starter",
       "Up to 10 pages",
@@ -35,9 +50,13 @@ const plans = [
   },
   {
     name: "Custom",
-    description: "For businesses with more complex requirements.",
+    eyebrow: "Build bigger",
+    description:
+      "For ambitious projects that need custom functionality, integrations, or a more advanced digital product.",
     price: "Let's talk",
-    accent: "amber",
+    icon: WandSparkles,
+    color: "#168A9A",
+    soft: "#DDF5F5",
     features: [
       "Everything in Growth",
       "Custom functionality",
@@ -50,59 +69,120 @@ const plans = [
   },
 ];
 
-const accentStyles = {
-  violet: {
-    border: "hover:border-violet-400/30",
-    icon: "text-violet-400",
-    glow: "bg-violet-400/10",
-  },
-  cyan: {
-    border: "border-cyan-400/40 hover:border-cyan-400/60",
-    icon: "text-cyan-400",
-    glow: "bg-cyan-400/10",
-  },
-  amber: {
-    border: "hover:border-amber-400/30",
-    icon: "text-amber-400",
-    glow: "bg-amber-400/10",
-  },
-};
-
 export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="relative overflow-hidden px-6 py-20 md:px-10 md:py-24 lg:py-28"
+      className="relative overflow-hidden bg-[#F7F2EB] px-6 py-28 text-[#171310] transition-colors duration-500 dark:bg-[#171310] dark:text-[#FFF9F2] md:px-10 md:py-36"
     >
-      {/* Background glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-96 w-96 -translate-x-1/2 rounded-full bg-cyan-400/5 blur-[120px]" />
+      {/* Background decoration */}
+      <div className="pointer-events-none absolute -left-32 top-20 h-72 w-72 rounded-full bg-[#FFB84D]/20 blur-3xl dark:bg-[#FF6B35]/10" />
+
+      <div className="pointer-events-none absolute -right-32 bottom-20 h-80 w-80 rounded-full bg-[#7867D8]/15 blur-3xl dark:bg-[#7867D8]/10" />
+
+      <div className="pointer-events-none absolute left-[45%] top-[42%] h-40 w-40 rounded-full border-[20px] border-[#65D6D6]/10 dark:border-[#65D6D6]/5" />
 
       <div className="relative mx-auto max-w-7xl">
-        {/* Heading */}
-        <Reveal direction="up">
-          <div className="mx-auto mb-12 max-w-3xl text-center md:mb-16">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-violet-400">
-              Pricing
-            </p>
+        {/* Header */}
+        <div className="grid gap-10 lg:grid-cols-[1fr_0.55fr] lg:items-end">
+          <div>
+            <Reveal direction="left">
+              <div className="mb-6 flex items-center gap-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#FF6B35]" />
 
-            <h2 className="text-4xl font-bold tracking-tight md:text-6xl">
-              Choose the level of{" "}
-              <span className="text-black/25 dark:text-white/30">
-                digital presence.
-              </span>
-            </h2>
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#756D66] dark:text-white/45">
+                  Simple pricing
+                </p>
+              </div>
+            </Reveal>
 
-            <p className="mt-6 text-lg leading-relaxed text-black/50 dark:text-white/40">
-              Start with what your business needs today and scale as your
-              requirements grow.
-            </p>
+            <motion.h2
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+              className="max-w-4xl text-5xl font-semibold leading-[0.9] tracking-[-0.06em] md:text-7xl lg:text-8xl"
+            >
+              <motion.span
+                className="inline-block"
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    x: -50,
+                    rotate: -4,
+                  },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    rotate: 0,
+                    transition: {
+                      duration: 0.7,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                }}
+              >
+                Pick your
+              </motion.span>{" "}
+              <motion.span
+                className="relative inline-block text-[#7867D8]"
+                variants={{
+                  hidden: {
+                    opacity: 0,
+                    y: 30,
+                    rotate: 4,
+                  },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    rotate: 0,
+                    transition: {
+                      duration: 0.7,
+                      delay: 0.12,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                }}
+              >
+                starting point.
+                <svg
+                  className="absolute -bottom-4 left-0 w-full"
+                  viewBox="0 0 300 18"
+                  fill="none"
+                >
+                  <path
+                    d="M4 10C80 2 210 3 296 10"
+                    stroke="#FF6B35"
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </motion.span>
+            </motion.h2>
           </div>
-        </Reveal>
 
-        {/* Plans */}
-        <div className="grid gap-4 lg:grid-cols-3">
+          <Reveal direction="up" delay={0.25}>
+            <div className="max-w-md">
+              <p className="text-base leading-relaxed text-[#756D66] dark:text-white/55 md:text-lg">
+                Every project is different. These packages give you a clear
+                starting point, and we can shape the scope around what your
+                business actually needs.
+              </p>
+
+              <div className="mt-6 flex items-center gap-2 text-sm font-bold">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#171310] text-white dark:bg-[#FFF9F2] dark:text-[#171310]">
+                  <Sparkles size={14} />
+                </span>
+
+                <span>No unnecessary extras. Just useful work.</span>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+
+        {/* Pricing */}
+        <div className="mt-20 grid gap-7 lg:grid-cols-3 lg:items-start">
           {plans.map((plan, index) => {
-            const accent = accentStyles[plan.accent];
+            const Icon = plan.icon;
 
             return (
               <Reveal
@@ -112,114 +192,221 @@ export default function Pricing() {
               >
                 <motion.div
                   whileHover={{
-                    y: -10,
+                    y: plan.popular ? -12 : -8,
+                    rotate: plan.popular ? 0 : index === 0 ? -1 : 1,
                   }}
                   transition={{
                     duration: 0.3,
+                    ease: "easeOut",
                   }}
-                  className={`group relative h-full overflow-hidden rounded-3xl border border-black/10 bg-black/[0.02] p-7 transition-all duration-500 dark:border-white/10 dark:bg-white/[0.03] ${accent.border} ${
-                    plan.popular
-                      ? "border-cyan-400/40 bg-cyan-400/[0.04] dark:bg-cyan-400/[0.05]"
-                      : ""
-                  }`}
+                  className={`relative ${plan.popular ? "lg:-mt-8" : ""}`}
                 >
-                  {/* Hover glow */}
-                  <div
-                    className={`pointer-events-none absolute -right-24 -top-24 h-48 w-48 rounded-full blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${accent.glow}`}
-                  />
-
-                  <div className="relative">
-                    {/* Popular badge */}
-                    {plan.popular && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{
-                          delay: 0.3,
-                          duration: 0.4,
-                        }}
-                        className="absolute right-0 top-0 rounded-full bg-cyan-400 px-3 py-1 text-xs font-bold text-black"
-                      >
-                        Popular
-                      </motion.div>
-                    )}
-
-                    {/* Plan */}
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`h-2 w-2 rounded-full ${accent.icon.replace(
-                          "text-",
-                          "bg-",
-                        )}`}
-                      />
-
-                      <h3 className="text-2xl font-semibold">{plan.name}</h3>
-                    </div>
-
-                    <p className="mt-3 min-h-[60px] max-w-sm text-sm leading-relaxed text-black/50 dark:text-white/40">
-                      {plan.description}
-                    </p>
-
-                    {/* Price */}
-                    <div className="mt-8 text-3xl font-bold tracking-tight">
-                      {plan.price}
-                    </div>
-
-                    {/* CTA */}
-                    <a
-                      href="#contact"
-                      className={`group/button mt-8 flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-semibold transition-all duration-300 ${
-                        plan.popular
-                          ? "bg-black text-white hover:bg-cyan-400 hover:text-black dark:bg-white dark:text-black dark:hover:bg-cyan-400"
-                          : "border border-black/10 text-black hover:border-black/20 hover:bg-black/5 dark:border-white/15 dark:text-white dark:hover:bg-white/5"
-                      }`}
+                  {/* Popular floating label */}
+                  {plan.popular && (
+                    <motion.div
+                      initial={{
+                        opacity: 0,
+                        y: 15,
+                        rotate: -3,
+                      }}
+                      whileInView={{
+                        opacity: 1,
+                        y: 0,
+                        rotate: -3,
+                      }}
+                      viewport={{ once: true }}
+                      transition={{
+                        duration: 0.5,
+                        delay: 0.35,
+                      }}
+                      className="absolute -right-2 -top-5 z-20 flex items-center gap-2 rounded-full border-2 border-[#171310] bg-[#FFB84D] px-4 py-2 text-xs font-black text-[#171310] shadow-[4px_4px_0_#171310] dark:border-[#FFF9F2] dark:shadow-[4px_4px_0_#FF6B35]"
                     >
-                      Start a Project
-                      <ArrowUpRight
-                        size={16}
-                        className="transition-transform duration-300 group-hover/button:translate-x-1 group-hover/button:-translate-y-1"
+                      <Sparkles size={13} />
+                      MOST REQUESTED
+                    </motion.div>
+                  )}
+
+                  {/* Main panel */}
+                  <div
+                    className={`relative overflow-hidden rounded-[2rem] border-2 border-[#171310] bg-[#FFF9F2] shadow-[7px_7px_0_#171310] transition-colors duration-500 dark:border-[#FFF9F2] dark:bg-[#211914] dark:shadow-[7px_7px_0_#FF6B35] ${
+                      plan.popular
+                        ? "shadow-[9px_9px_0_#171310] dark:shadow-[9px_9px_0_#FF6B35]"
+                        : ""
+                    }`}
+                  >
+                    {/* Color header */}
+                    <div
+                      className="relative h-28 overflow-hidden"
+                      style={{
+                        backgroundColor: plan.soft,
+                      }}
+                    >
+                      {/* Decorative circle */}
+                      <div
+                        className="absolute -right-8 -top-10 h-36 w-36 rounded-full"
+                        style={{
+                          backgroundColor: plan.color,
+                          opacity: 0.2,
+                        }}
                       />
-                    </a>
 
-                    {/* Divider */}
-                    <div className="my-8 h-px bg-black/10 dark:bg-white/10" />
+                      {/* Decorative rotating shape */}
+                      <motion.div
+                        animate={{
+                          rotate: [0, 10, 0, -10, 0],
+                        }}
+                        transition={{
+                          duration: 7,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                        className="absolute bottom-[-30px] left-8 h-20 w-20 rounded-[1.5rem] border-2 border-[#171310] bg-[#FFF9F2] dark:border-[#171310] dark:bg-[#211914]"
+                      />
 
-                    <p className="mb-5 text-xs font-semibold uppercase tracking-widest text-black/30 dark:text-white/30">
-                      What's included
-                    </p>
+                      {/* Icon */}
+                      <div className="absolute left-6 top-6 flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-[#171310] bg-[#FFF9F2] shadow-[4px_4px_0_#171310] dark:bg-[#211914] dark:shadow-[4px_4px_0_#FF6B35]">
+                        <Icon
+                          size={25}
+                          strokeWidth={1.8}
+                          style={{ color: plan.color }}
+                        />
+                      </div>
 
-                    {/* Features */}
-                    <ul className="space-y-4">
-                      {plan.features.map((feature, featureIndex) => (
-                        <motion.li
-                          key={feature}
-                          initial={{
-                            opacity: 0,
-                            x: -10,
+                      {/* Number */}
+                      <span
+                        className="absolute right-6 top-7 text-6xl font-black tracking-[-0.08em]"
+                        style={{
+                          color: plan.color,
+                          opacity: 0.15,
+                        }}
+                      >
+                        0{index + 1}
+                      </span>
+                    </div>
+
+                    <div className="p-7 md:p-8">
+                      {/* Name */}
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p
+                            className="text-xs font-black uppercase tracking-[0.18em]"
+                            style={{ color: plan.color }}
+                          >
+                            {plan.eyebrow}
+                          </p>
+
+                          <h3 className="mt-2 text-3xl font-bold tracking-[-0.04em]">
+                            {plan.name}
+                          </h3>
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <p className="mt-4 min-h-[76px] text-sm leading-relaxed text-[#756D66] dark:text-white/50">
+                        {plan.description}
+                      </p>
+
+                      {/* Price */}
+                      <div className="mt-7">
+                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#AAA19A] dark:text-white/35">
+                          Investment
+                        </p>
+
+                        <div
+                          className="mt-1 text-4xl font-black tracking-[-0.05em]"
+                          style={{
+                            color:
+                              plan.name === "Custom" ? undefined : plan.color,
                           }}
-                          whileInView={{
-                            opacity: 1,
-                            x: 0,
-                          }}
-                          viewport={{
-                            once: true,
-                          }}
-                          transition={{
-                            duration: 0.4,
-                            delay: 0.25 + featureIndex * 0.04,
-                          }}
-                          className="flex items-start gap-3 text-sm text-black/55 dark:text-white/55"
                         >
-                          <Check
-                            size={17}
-                            className={`mt-0.5 shrink-0 ${accent.icon}`}
-                          />
+                          <span
+                            className={
+                              plan.name === "Custom"
+                                ? "text-[#171310] dark:text-[#FFF9F2]"
+                                : ""
+                            }
+                          >
+                            {plan.price}
+                          </span>
+                        </div>
+                      </div>
 
-                          <span>{feature}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
+                      {/* CTA */}
+                      <motion.a
+                        href="#contact"
+                        whileTap={{ scale: 0.97 }}
+                        className={`group mt-8 flex items-center justify-between rounded-2xl border-2 px-5 py-4 text-sm font-bold transition-all duration-300 ${
+                          plan.popular
+                            ? "border-[#171310] bg-[#171310] text-white hover:bg-[#7867D8] dark:border-[#FFF9F2] dark:bg-[#FFF9F2] dark:text-[#171310] dark:hover:bg-[#7867D8] dark:hover:text-white"
+                            : "border-[#171310] bg-[#FFF9F2] hover:bg-[#171310] hover:text-white dark:border-[#FFF9F2] dark:bg-[#211914] dark:hover:bg-[#FFF9F2] dark:hover:text-[#171310]"
+                        }`}
+                      >
+                        <span>Start a project</span>
+
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#171310] transition-transform duration-300 group-hover:rotate-45 dark:bg-[#171310] dark:text-[#FFF9F2]">
+                          <ArrowUpRight size={16} />
+                        </span>
+                      </motion.a>
+
+                      {/* Divider */}
+                      <div className="my-8 h-[2px] bg-[#171310]/10 dark:bg-white/10" />
+
+                      {/* Features heading */}
+                      <div className="mb-5 flex items-center justify-between">
+                        <p className="text-xs font-black uppercase tracking-[0.16em] text-[#756D66] dark:text-white/45">
+                          What's included
+                        </p>
+
+                        <span
+                          className="h-2.5 w-2.5 rounded-full"
+                          style={{
+                            backgroundColor: plan.color,
+                          }}
+                        />
+                      </div>
+
+                      {/* Features */}
+                      <ul className="space-y-4">
+                        {plan.features.map((feature, featureIndex) => (
+                          <motion.li
+                            key={feature}
+                            initial={{
+                              opacity: 0,
+                              x: -12,
+                            }}
+                            whileInView={{
+                              opacity: 1,
+                              x: 0,
+                            }}
+                            viewport={{
+                              once: true,
+                            }}
+                            transition={{
+                              duration: 0.4,
+                              delay: 0.2 + featureIndex * 0.04,
+                            }}
+                            className="flex items-start gap-3 text-sm leading-relaxed text-[#514A45] dark:text-white/65"
+                          >
+                            <span
+                              className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+                              style={{
+                                backgroundColor: plan.soft,
+                              }}
+                            >
+                              <Check
+                                size={12}
+                                strokeWidth={3}
+                                style={{
+                                  color: plan.color,
+                                }}
+                              />
+                            </span>
+
+                            <span>{feature}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </motion.div>
               </Reveal>
@@ -227,12 +414,28 @@ export default function Pricing() {
           })}
         </div>
 
-        {/* Pricing disclaimer */}
-        <Reveal direction="fade" delay={0.35}>
-          <p className="mt-8 text-center text-xs text-black/25 dark:text-white/25">
-            Final pricing depends on project scope, functionality, content,
-            integrations, and requirements.
-          </p>
+        {/* Bottom note */}
+        <Reveal direction="up" delay={0.4}>
+          <div className="mt-16 flex flex-col gap-5 border-t-2 border-[#171310]/10 pt-7 dark:border-white/10 md:flex-row md:items-center md:justify-between">
+            <p className="max-w-xl text-sm leading-relaxed text-[#756D66] dark:text-white/50">
+              Final pricing depends on scope, functionality, content,
+              integrations, and project requirements.
+            </p>
+
+            <a
+              href="#contact"
+              className="group inline-flex items-center gap-2 text-sm font-bold"
+            >
+              Not sure what you need?
+              <span className="text-[#FF6B35] transition-transform duration-300 group-hover:translate-x-1">
+                Let's talk
+              </span>
+              <ArrowUpRight
+                size={16}
+                className="transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1"
+              />
+            </a>
+          </div>
         </Reveal>
       </div>
     </section>
